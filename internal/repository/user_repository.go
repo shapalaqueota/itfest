@@ -14,7 +14,7 @@ func CreateUser(conn *pgxpool.Conn, user models.User) (string, error) {
 		return "", err
 	}
 	var userID string
-	query := `INSERT INTO "user" (username, email, password, phone_number,) VALUES ($1, $2, $3, $4) RETURNING id`
+	query := `INSERT INTO "user" (username, email, password, phone_number) VALUES ($1, $2, $3, $4) RETURNING id`
 	err = conn.QueryRow(context.Background(), query, user.Username, user.Email, hashedPassword, user.PhoneNumber).Scan(&userID)
 	if err != nil {
 		log.Printf("Failed to create user: %v", err)

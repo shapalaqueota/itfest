@@ -25,15 +25,15 @@ func ConnectDB() {
 
 func createTables() {
 	createUserTable := `
-		CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-		
-		CREATE TABLE IF NOT EXISTS "user" (
-			id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-			username VARCHAR(255) NOT NULL,
-			email VARCHAR(255) UNIQUE NOT NULL,
-			password VARCHAR(255) NOT NULL,
-			phone_number VARCHAR(255) UNIQUE
-		);`
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    
+    CREATE TABLE IF NOT EXISTS "user" (
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      username VARCHAR(255) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      phone_number VARCHAR(255) UNIQUE
+    );`
 
 	_, err := DB.Exec(context.Background(), createUserTable)
 	if err != nil {
@@ -41,14 +41,14 @@ func createTables() {
 	}
 
 	createItemTable := `
-		CREATE TABLE IF NOT EXISTS item (
-			id SERIAL PRIMARY KEY,
-			title VARCHAR(255) NOT NULL,
-			description TEXT,
-		    price integer NOT NULL,
-		    category VARCHAR(255) NOT NULL,
-		    image_url VARCHAR(255)
-	);`
+    CREATE TABLE IF NOT EXISTS item (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      description TEXT,
+      price INTEGER NOT NULL,
+      category VARCHAR(255) NOT NULL,
+      image_url VARCHAR(255)
+    );`
 
 	_, err = DB.Exec(context.Background(), createItemTable)
 	if err != nil {
