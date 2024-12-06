@@ -11,8 +11,7 @@ func Router(router *gin.Engine) {
 	authorized := router.Group("/")
 	{
 		authorized.GET("/users/:id", GetUser)
-		router.POST("/upload", UploadImageHandler)
-		router.POST("/items", CreateItemHandler)
-
+		authorized.POST("/items", CreateItemHandler)
+		authorized.GET("/items/:id", GetItemByIdHandler)
 	}
 }
