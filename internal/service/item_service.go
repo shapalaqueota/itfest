@@ -1,8 +1,6 @@
 package service
 
 import (
-	_ "context"
-	_ "errors"
 	"fmt"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"itfest/internal/models"
@@ -10,22 +8,22 @@ import (
 	"itfest/internal/utils"
 )
 
-func CreateItem(conn *pgxpool.Conn, item models.Item, file []byte) (string, error) {
+func CreateItem(conn *pgxpool.Conn, item models.Item, file []byte) (int, error) {
 	imageKey := fmt.Sprintf("items/%s.jpg", item.Title)
 	imageURL, err := utils.UploadFile(imageKey, file)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	item.ImageURL = imageURL
 	itemID, err := repository.CreateItem(conn, item)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	return itemID, nil
 }
 
-func GetItemById(conn *pgxpool.Pool, id string) (*models.Item, error) {
+func GetItemById(conn *pgxpool.Pool, id int) (*models.Item, error) {
 	return repository.GetItemById(conn, id)
 }

@@ -16,9 +16,9 @@ var bucket string
 
 func InitVKCloudService() {
 	region := "kz-ast"
-	accessKey := "gkf3GircGx4R8FgoSiKNUn"
-	secretKey := "hTG2nkHZYBoGvm1MzHHmhTnTmayP3EYpDFhvo9ZCy3GE"
-	bucket = "itfest"
+	accessKey := "b8NHRyT4BS5fVchTiGcCDu"
+	secretKey := "12Xga1S9x6J2kDFU9rSrxnWRtUrE5G18udFusUN41j7t"
+	bucket = "itfestkz04"
 
 	log.Printf("Initializing VK Cloud Service with region: %s, bucket: %s", region, bucket)
 	log.Printf("Access Key: %s", accessKey)
