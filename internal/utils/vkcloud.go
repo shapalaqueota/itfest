@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"log"
-	"net/http"
 )
 
 var s3Client *s3.S3
@@ -37,17 +36,6 @@ func InitVKCloudService() {
 
 	s3Client = s3.New(sess)
 
-	testDNS(bucket, region)
-}
-
-func testDNS(bucket, region string) {
-	host := "hb.kz-ast.vkcs.cloud"
-	resp, err := http.Get(fmt.Sprintf("https://%s", host))
-	if err != nil {
-		log.Printf("DNS resolution failed for host %s: %v", host, err)
-	} else {
-		log.Printf("DNS resolution successful for host %s, status: %s", host, resp.Status)
-	}
 }
 
 func UploadFile(key string, file []byte) (string, error) {

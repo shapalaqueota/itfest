@@ -13,5 +13,6 @@ func Router(router *gin.Engine) {
 		authorized.GET("/users/:id", GetUser)
 		authorized.POST("/items", CreateItemHandler)
 		authorized.GET("/items/:id", GetItemByIdHandler)
+		authorized.DELETE("/items/:id", DeleteItemHandler)
 	}
 }

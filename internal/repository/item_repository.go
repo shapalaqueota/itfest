@@ -37,3 +37,13 @@ func GetItemById(conn *pgxpool.Pool, id int) (*models.Item, error) {
 	}
 	return &item, nil
 }
+
+func DeleteItem(conn *pgxpool.Conn, id int) error {
+	query := `DELETE FROM item WHERE id = $1 RETURNING id`
+	var deletedID int
+	err := conn.QueryRow(context.Background(), query, id).Scan(&deletedID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

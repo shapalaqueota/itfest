@@ -6,6 +6,7 @@ import (
 	"itfest/internal/models"
 	"itfest/internal/repository"
 	"itfest/internal/service"
+	"mime/multipart"
 	"net/http"
 	"strconv"
 
@@ -34,7 +35,12 @@ func CreateItemHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open image file: " + err.Error()})
 		return
 	}
-	defer file.Close()
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+			println("Failed to close image file: " + err.Error())
+		}
+	}(file)
 
 	imageService := service.NewImageService()
 
@@ -93,5 +99,32 @@ func GetItemByIdHandler(c *gin.Context) {
 		"price":       item.Price,
 		"category":    item.Category,
 		"image_url":   item.ImageURL,
+	})
+}
+
+func DeleteItemHandler(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid item id"})
+		return
+	}
+
+	conn, err := db.DB.Acquire(context.Background())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to acquire database connection"})
+		return
+	}
+	defer conn.Release()
+
+	err = repository.DeleteItem(conn, id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Item not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Item deleted successfully",
+		"itemID":  id,
 	})
 }
