@@ -20,7 +20,7 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(middleware.CORSMiddleware())
 	api.Router(router)
-	err := router.Run(":8080")
+	err := router.Run("0.0.0.0:8080")
 	if err != nil {
 		panic(err)
 	}

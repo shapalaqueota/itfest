@@ -128,3 +128,22 @@ func DeleteItemHandler(c *gin.Context) {
 		"itemID":  id,
 	})
 }
+
+func GetItemsHandler(c *gin.Context) {
+	conn, err := db.DB.Acquire(context.Background())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to acquire database connection"})
+		return
+	}
+	defer conn.Release()
+
+	items, err := repository.GetAllItems(conn)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve items"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"items": items,
+	})
+}
